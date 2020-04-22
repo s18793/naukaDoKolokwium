@@ -41,33 +41,76 @@ namespace naukaKolokwiumAPDB.Controllers
         public IActionResult GetStundets()
         {
 
-
+            var list = new List<Student>();
             using (SqlConnection con = new SqlConnection("Data Source = db-mssql; Initial Catalog=s18793; Integrated Security=True"))
             using (SqlCommand com = new SqlCommand())
             {
                 com.Connection = con;
-                com.CommandText = "Select * from Students";
+                com.CommandText = "Select * from Student";
+
+                con.Open();
+                SqlDataReader dr = com.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    var st = new Student();
+                   
+                    st.IndexNumber =  dr["IndexNumber"].ToString();
+                    st.FirstName = dr["FirstName"].ToString();
+                    st.LastName = dr["LastName"].ToString();
+                    
+                    list.Add(st);
+                }
+
+
+
+
+
             }
 
 
 
 
-                return Ok();
+                return Ok(list);
+
         }
 
 
-        /*
+        
         //3 body- cialo zadan
-        [HttpPost]
-        public IActionResult CreateStudent(Student student)
+        [HttpGet("(indexNumber)")]
+        public IActionResult GetStudent(string indexNumber)
         {
 
-            student.IndexNumber = $"s{new Random().Next(1, 20000)}";
-            //..
+            using (SqlConnection con = new SqlConnection("Data Source = db-mssql; Initial Catalog=s18793; Integrated Security=True"))
+            using (SqlCommand com = new SqlCommand())
+            {
+                com.Connection = con;
+                com.CommandText = "Select * from Student where indexnumber = @index";
+                com.Parameters.AddWithValue("index", indexNumber);
+                con.Open();
+                var dr = com.ExecuteReader();
 
-            return Ok(student);
+                while (dr.Read())
+                {
+                    var st = new Student();
+
+                    st.IndexNumber = dr["IndexNumber"].ToString();
+                    st.FirstName = dr["FirstName"].ToString();
+                    st.LastName = dr["LastName"].ToString();
+
+                    return Ok(st);
+                }
+
+
+
+
+
+            }
+
+            return NotFound(); 
         }
 
-    */
+    
     }
 }

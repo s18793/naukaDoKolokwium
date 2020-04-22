@@ -40,7 +40,7 @@ namespace naukaKolokwiumAPDB
             app.UseRouting();
 
             //dokkaleja naglowek http do sledzenia uzytkownikka 
-
+/*
             app.Use(async (context, c) =>
             {
                 context.Response.Headers.Add("Secret", "s18793");
@@ -49,6 +49,8 @@ namespace naukaKolokwiumAPDB
             });
 
             app.UseMiddleware<CustomMiddleware>();
+
+    */
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
